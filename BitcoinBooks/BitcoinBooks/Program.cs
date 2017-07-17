@@ -22,9 +22,9 @@ namespace BitcoinBooks
             {
                 string source = @"C:\Users\Nobel360\Desktop\values.csv";
                 //string source = args[0];
-                string dest1 = new FileInfo(source).Directory.FullName + @"\LBC Account.csv";
-                string dest2 = new FileInfo(source).Directory.FullName + @"\Contra GBP.csv";
-                string dest3 = new FileInfo(source).Directory.FullName + @"\Full Data.csv";
+                string dest1 = new FileInfo(source).Directory.FullName + @"\LBCAccount.txt";
+                string dest2 = new FileInfo(source).Directory.FullName + @"\ContraGBP.csv";
+                string dest3 = new FileInfo(source).Directory.FullName + @"\FullData.csv";
 
                 var chunks = CSVEditor.Read(source);
                 //int listLength = (int)Math.Ceiling((double) chunks.Count / 100);
@@ -39,7 +39,15 @@ namespace BitcoinBooks
                     Task.WaitAll(_tasks.ToArray());
                 }
 
+
                 _transactions.Sort((x, y) => DateTime.Compare(y.Date, x.Date));
+
+                foreach (Transaction trans in _transactions)
+                {
+                    if (trans.Type == null)
+                        throw new Exception(trans.ToString());
+                }
+
                 CSVEditor.Write(dest1, _transactions.ToOutsList());
                 CSVEditor.Write(dest2, _transactions.ToInsList());
                 CSVEditor.Write(dest3, _transactions.ToFullInsList());

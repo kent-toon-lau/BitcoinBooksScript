@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,20 +37,15 @@ namespace BitcoinBooks
 
         public static bool Write(string address, List<List<string>> data)
         {
-                using (var writer = new StreamWriter(address))
+            using (var writer = new StreamWriter(address))
+            {
+                writer.AutoFlush = true;
+                foreach (var line in data)
                 {
-                    // Adapted from https://stackoverflow.com/questions/17339922/c-sharp-how-to-write-a-listliststring-to-csv-file
-                    data.ForEach(line =>
-                    {
-
-                        var lineArray = line.Select(c =>
-                            c.Contains(",") ? c.Replace(",".ToString(), "\\" + ",") : c).ToArray();
-                        writer.WriteLine(string.Join(",", lineArray));
-
-                    });
+                    writer.WriteLine(string.Join(",", line));
                 }
-                return true;
-
+            }
+            return true;
         }
     }
 }

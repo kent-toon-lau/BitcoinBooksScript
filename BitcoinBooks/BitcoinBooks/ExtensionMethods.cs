@@ -56,6 +56,7 @@ namespace BitcoinBooks
             return data;
         }
 
+
         public static List<List<string>> ToInsList(this List<Transaction> transactions)
         {
             List<List<string>> data = new List<List<string>>();
@@ -75,6 +76,15 @@ namespace BitcoinBooks
         public static List<List<string>> ToFullInsList(this List<Transaction> transactions)
         {
             List<List<string>> data = new List<List<string>>();
+            data.Add(new List<string>()
+            {
+                "Date",
+                "GBP Value",
+                "BTN Value (x1000000)",
+                "Conversation Rate",
+                "Description"
+            });
+
             foreach (Transaction transaction in transactions.Where(t => t.Type == TransactionType.In))
             {
                 data.Add(new List<string>()
