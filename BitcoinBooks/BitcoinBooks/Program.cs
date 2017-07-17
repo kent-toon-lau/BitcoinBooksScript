@@ -12,7 +12,7 @@ namespace BitcoinBooks
     {
         private static ProgressBar _bar;
         private static int _finishedCount = 0;
-        private static int _total = 1;
+        private static int _total = 0;
         private static List<Task> _tasks = new List<Task>();
         private static List<Transaction> _transactions = new List<Transaction>();
 
@@ -27,11 +27,11 @@ namespace BitcoinBooks
                 string dest3 = new FileInfo(source).Directory.FullName + @"\Full Data.csv";
 
                 var chunks = CSVEditor.Read(source);
-                int listLength = (int)Math.Ceiling((double) chunks.Count / 100);
+                //int listLength = (int)Math.Ceiling((double) chunks.Count / 100);
 
                 using (_bar = new ProgressBar())
                 {
-                    foreach (var chunk in chunks.SplitLists(listLength))
+                    foreach (var chunk in chunks.SplitLists())
                     {
                         _total++;
                         _tasks.Add(Task.Factory.StartNew(() => ProcessList(chunk)));
@@ -39,6 +39,7 @@ namespace BitcoinBooks
                     Task.WaitAll(_tasks.ToArray());
                 }
 
+                _transactions.Sort((x, y) => DateTime.Compare(y.Date, x.Date));
                 CSVEditor.Write(dest1, _transactions.ToOutsList());
                 CSVEditor.Write(dest2, _transactions.ToInsList());
                 CSVEditor.Write(dest3, _transactions.ToFullInsList());
@@ -52,8 +53,6 @@ namespace BitcoinBooks
                 Console.WriteLine(
                     "\nThe File could not be processed. Please verify that the CSV file is not open in another process and that you have read and write permissions to the directory.");
             }
-
-            Console.ReadKey();
         }
 
         private static void ProcessList(List<List<string>> transactionsData)

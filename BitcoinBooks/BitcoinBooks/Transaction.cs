@@ -29,7 +29,7 @@ namespace BitcoinBooks
         public Transaction(List<string> data)
         {
             Date = data[0].ToDateTime();
-            if (data[1] == "")
+            if (data[1] == " ")
             {
                 Type = TransactionType.Out;
                 _standardBitcoinValue = data[2].ToCurrency();
@@ -41,6 +41,7 @@ namespace BitcoinBooks
             }
 
             ConversionRate = Conversion.GetBTCToGBPRateOn(Date);
+            Description = data[3];
         }
 
         

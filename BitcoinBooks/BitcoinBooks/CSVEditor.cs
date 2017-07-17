@@ -21,7 +21,8 @@ namespace BitcoinBooks
                     {
                         var line = reader.ReadLine();
                         var values = line.Split(',').ToList();
-                        csv.Add(values);
+                        if (values[0] != "")
+                            csv.Add(values);
                     }
                 }
                 return csv;
@@ -35,27 +36,19 @@ namespace BitcoinBooks
 
         public static bool Write(string address, List<List<string>> data)
         {
-            try
-            {
                 using (var writer = new StreamWriter(address))
                 {
                     // Adapted from https://stackoverflow.com/questions/17339922/c-sharp-how-to-write-a-listliststring-to-csv-file
                     data.ForEach(line =>
                     {
+
                         var lineArray = line.Select(c =>
                             c.Contains(",") ? c.Replace(",".ToString(), "\\" + ",") : c).ToArray();
-                        if (!(string.IsNullOrEmpty(lineArray[1]) && string.IsNullOrEmpty(lineArray[2])))
-                            writer.WriteLine(string.Join(",", lineArray));
+                        writer.WriteLine(string.Join(",", lineArray));
+
                     });
                 }
                 return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return false;
-            }
-
 
         }
     }
