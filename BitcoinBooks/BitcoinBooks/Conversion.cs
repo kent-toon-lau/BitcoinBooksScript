@@ -32,57 +32,66 @@ namespace BitcoinBooks
             else // This is a new search date that hasn't been recorded.
             {
                 WebClient client = null;
-
-                #region try{}
-                try
+                bool foundExchangeRate = false;
+                while (!foundExchangeRate)
                 {
-                    client = new WebClient();
+                    #region try{}
+                    try
+                    {
+                        client = new WebClient();
 
-                    //#region XE Website
-                    //var uri = $"{XeDotComSpotPriceUri}{dateOfTransaction:yyyy-MM-dd}";
+                        #region XE Website
+                        var uri = $"{XeDotComSpotPriceUri}{dateOfTransaction:yyyy-MM-dd}";
 
-                    //var html = new HtmlDocument();
-                    //html.LoadHtml(client.DownloadString(uri));
+                        var html = new HtmlDocument();
+                        html.LoadHtml(client.DownloadString(uri));
 
-                    //var root = html.DocumentNode;
-                    //var p = root
-                    //    .Descendants()
-                    //    .Single(n => n.GetAttributeValue("class", "").Equals("historicalRateTable-wrap"))
-                    //    .Descendants("tr")
-                    //    .Single(n => n.FirstChild.InnerHtml.Contains("gbp-british-pound"))
-                    //    .Descendants("td")
-                    //    .First(n => n.GetAttributeValue("class", "").Equals("historicalRateTable-rateHeader"));
-                    //exchangeRate = Convert.ToDouble(p.InnerText);
-                    //#endregion
+                        var root = html.DocumentNode;
+                        var p = root
+                            .Descendants()
+                            .Single(n => n.GetAttributeValue("class", "").Equals("historicalRateTable-wrap"))
+                            .Descendants("tr")
+                            .Single(n => n.FirstChild.InnerHtml.Contains("gbp-british-pound"))
+                            .Descendants("td")
+                            .First(n => n.GetAttributeValue("class", "").Equals("historicalRateTable-rateHeader"));
+                        exchangeRate = Convert.ToDouble(p.InnerText);
+                        #endregion
 
-                    #region Currencies Website
-                    // YYYY-MM-DD, note: leading zeroes are not needed.
-                    // Opens up a web link to currencies and downloads the string outputted by the website.
-                    string date = dateOfTransaction.Year + "-" + dateOfTransaction.Month + "-" + dateOfTransaction.Day;
-                    var uri = String.Format("http://currencies.apps.grandtrunk.net/getrate/" + date + "/btc/gbp");
+                        if (exchangeRate != 0.0)
+                        {
+                            foundExchangeRate = true;
+                        }
 
-                    client.UseDefaultCredentials = true;
-                    var data = client.DownloadString(uri);
-                    exchangeRate = Convert.ToDouble(data);
+
+                        //#region Currencies Website
+                        //// YYYY-MM-DD, note: leading zeroes are not needed.
+                        //// Opens up a web link to currencies and downloads the string outputted by the website.
+                        //string date = dateOfTransaction.Year + "-" + dateOfTransaction.Month + "-" + dateOfTransaction.Day;
+                        //var uri = String.Format("http://currencies.apps.grandtrunk.net/getrate/" + date + "/btc/gbp");
+
+                        //client.UseDefaultCredentials = true;
+                        //var data = client.DownloadString(uri);
+                        //exchangeRate = Convert.ToDouble(data);
+                        //#endregion
+
+                    }
                     #endregion
 
-                }
-                #endregion
+                    #region catch{}
+                    catch (Exception ex)
+                    {
+                        // Console.WriteLine("\nError: " + ex.Message);
+                    }
+                    #endregion
 
-                #region catch{}
-                catch (Exception ex)
-                {
-                    Console.WriteLine("\nError: " + ex.Message);
+                    #region finally{}
+                    finally
+                    {
+                        client?.Dispose();
+                        client = null;
+                    }
+                    #endregion
                 }
-                #endregion
-
-                #region finally{}
-                finally
-                {
-                    client?.Dispose();
-                    client = null;
-                }
-                #endregion
 
                 _conversionRates.Add(dateOfTransaction, exchangeRate);   // Add date and exchangeRate to dictionary.
             }

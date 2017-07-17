@@ -20,7 +20,7 @@ namespace BitcoinBooks
         {
             try
             {
-                string source = @"C:\Users\Nobel360\Desktop\values.csv";
+                string source = @"C:\Users\Einstein360\Desktop\values.csv";
                 //string source = args[0];
                 string dest1 = new FileInfo(source).Directory.FullName + @"\LBCAccount.txt";
                 string dest2 = new FileInfo(source).Directory.FullName + @"\ContraGBP.csv";
@@ -29,6 +29,8 @@ namespace BitcoinBooks
                 var chunks = CSVEditor.Read(source);
                 //int listLength = (int)Math.Ceiling((double) chunks.Count / 100);
 
+
+                //ProcessList(chunks);
                 using (_bar = new ProgressBar())
                 {
                     foreach (var chunk in chunks.SplitLists())
