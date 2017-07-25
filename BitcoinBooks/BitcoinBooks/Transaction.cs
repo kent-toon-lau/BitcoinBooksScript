@@ -14,7 +14,7 @@ namespace BitcoinBooks
         public TransactionType Type { get; }
         public string Description { get; }
         public DateTime Date { get; }
-        public double ConversionRate { get; }
+        public double ConversionRate = 0.0;
 
         public double BTN_Value
         {
@@ -42,6 +42,9 @@ namespace BitcoinBooks
 
             ConversionRate = Conversion.GetBTCToGBPRateOn(Date);
             Description = data[3];
+
+            if (ConversionRate == 0.0)
+                throw new Exception("Value not set");
         }
 
         

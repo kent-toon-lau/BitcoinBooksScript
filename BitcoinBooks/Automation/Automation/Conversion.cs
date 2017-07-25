@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 
-namespace BitcoinBooks
+namespace Automation
 {
     public static class Conversion
     {
@@ -24,7 +24,7 @@ namespace BitcoinBooks
                 {
                     string[] values = s.Split(',');
                     values[1] = values[1].TrimEnd(charsToTrim);
-                    _conversionRates.Add(values[0].ToDateTimeEng(), values[1].ToCurrency());
+                    _conversionRates.Add(values[0].ToDateTime(), values[1].ToDouble());
                 }
                 catch (Exception e)
                 {
@@ -34,13 +34,13 @@ namespace BitcoinBooks
         }
 
 
-        public static double GetBTCToGBPRateOn(DateTime date)
+        public static double GetGBPToBTCRateOn(DateTime date)
         {
             DateTime dateToCheck = new DateTime(date.Year, date.Month, date.Day);
             double rate = 0.0;
             _conversionRates.TryGetValue(dateToCheck, out rate);
             if (rate != 0.0)
-                return rate;
+                return (1/rate);
             return 0.0;
         }
     }
