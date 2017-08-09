@@ -1,4 +1,4 @@
-﻿namespace Automation
+﻿namespace FindUser
 {
     partial class Form1
     {
@@ -28,35 +28,45 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button2 = new System.Windows.Forms.Button();
+            this.Address = new System.Windows.Forms.TextBox();
+            this.userButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // button2
+            // Address
             // 
-            this.button2.Location = new System.Drawing.Point(8, 22);
-            this.button2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(347, 64);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Complete Upload";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.Address.Location = new System.Drawing.Point(13, 13);
+            this.Address.Name = "Address";
+            this.Address.Size = new System.Drawing.Size(259, 20);
+            this.Address.TabIndex = 0;
+            // 
+            // userButton
+            // 
+            this.userButton.Location = new System.Drawing.Point(13, 39);
+            this.userButton.Name = "userButton";
+            this.userButton.Size = new System.Drawing.Size(259, 37);
+            this.userButton.TabIndex = 1;
+            this.userButton.Text = "Find User";
+            this.userButton.UseVisualStyleBackColor = true;
+            this.userButton.Click += new System.EventHandler(this.userButton_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(366, 113);
-            this.Controls.Add(this.button2);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ClientSize = new System.Drawing.Size(284, 90);
+            this.Controls.Add(this.userButton);
+            this.Controls.Add(this.Address);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.Button button2;
+
+        private System.Windows.Forms.TextBox Address;
+        private System.Windows.Forms.Button userButton;
     }
 }
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Automation
+namespace FindUser
 {
     public class Chat
     {
@@ -23,7 +23,7 @@ namespace Automation
             {
                 foreach(ChatMessage message in Messages)
                 {
-                    if (message.Sender != "neo210211")
+                    if (message.Sender != "Sender: neo210211")
                     {
                         return message.Sender;
                     }

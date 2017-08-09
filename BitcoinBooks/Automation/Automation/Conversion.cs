@@ -33,6 +33,15 @@ namespace Automation
             }
         }
 
+        public static double GetBTCToGBPRateOn(DateTime date)
+        {
+            DateTime dateToCheck = new DateTime(date.Year, date.Month, date.Day);
+            double rate = 0.0;
+            _conversionRates.TryGetValue(dateToCheck, out rate);
+            if (rate != 0.0)
+                return (rate);
+            return 0.0;
+        }
 
         public static double GetGBPToBTCRateOn(DateTime date)
         {

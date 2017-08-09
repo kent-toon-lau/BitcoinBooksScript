@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace BitcoinBooks
 {
@@ -31,27 +32,45 @@ namespace BitcoinBooks
 
         static void Main(string[] args)
         {
-            string source = @"C: \Users\Nobel360\Desktop\oddnums\oddnums.csv";
-            string dest = new FileInfo(source).Directory.FullName + @"\oddnums_processed.csv";
+            string source1 = @"C: \Users\Nobel360\Desktop\AprilActual.csv";
+            string source2 = @"C: \Users\Nobel360\Desktop\AprilClear.csv";
+            
+            //string dest = new FileInfo(source).Directory.FullName + @"\oddnums_processed.csv";
 
             List<string> ids = new List<string>();
             List<List<string>> oddAmountOfID = new List<List<string>>();
 
-            var lists = CSVEditor.Read(source);
-            foreach (var list in lists)
+            var actual = CSVEditor.Read(source1);
+            var clear = CSVEditor.Read(source1);
+
+            actual.Sort((x, y) => String.Compare(x.FirstOrDefault(), y.FirstOrDefault()));
+            clear.Sort((x, y) => String.Compare(x.FirstOrDefault(), y.FirstOrDefault()));
+
+            int i = 0;
+            while (i < actual.Count)
             {
-                ids.Add(list[0].ExtractID());
+                if (actual[i][2].ToCurrency() != clear[i][2].ToCurrency())
+                {
+                    MessageBox.Show(actual[i][0]+"   |   "+ actual[i][1] + "   |   " + actual[i][2] + "   |   " + actual[i][3]+"\n\n"+ clear[i][0] + "   |   " + clear[i][1] + "   |   " + clear[i][2] + "   |   " + clear[i][3]);
+                }
+                i++;
             }
 
-            foreach (string id in ids)
-            {
-                int occurances = CountOccurances(id, ids);
-                if (occurances % 2 != 0)
-                {
-                    oddAmountOfID.Add(new List<string>() { id, occurances.ToString() });
-                }
-            }
-            CSVEditor.Write(dest, oddAmountOfID);
+
+            //foreach (var list in lists)
+            //{
+            //    ids.Add(list[0].ExtractID());
+            //}
+
+            //foreach (string id in ids)
+            //{
+            //    int occurances = CountOccurances(id, ids);
+            //    if (occurances % 2 != 0)
+            //    {
+            //        oddAmountOfID.Add(new List<string>() { id, occurances.ToString() });
+            //    }
+            //}
+            //CSVEditor.Write(dest, oddAmountOfID);
 
             //try
             //{
